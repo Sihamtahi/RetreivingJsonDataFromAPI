@@ -1,10 +1,13 @@
 package com.example.myapplication
+import android.app.Person
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.ListView
 import android.widget.ProgressBar
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import okhttp3.*
 import org.json.JSONArray
 import org.json.JSONObject
@@ -47,9 +50,16 @@ class MainActivity : AppCompatActivity() {
                 Log.d("Sonthing ","aqli deg on response")
                 var str_response = response.body()!!.string()
 
-                Log.d("Sonthing ","j'ai récupére : "+str_response)
+                //Log.d("Sonthing ","j'ai récupére : "+str_response)
                 //creating json object
-               val json_contact = JSONObject(JSONTokener(str_response))
+            // val json_contact = JSONObject(str_response)
+                val gson = Gson()
+                val listPersonType = object : TypeToken<List<Town>>() {}.type
+                var persons: List<Town> = gson.fromJson(str_response, listPersonType)
+                persons.forEachIndexed {
+                        idx,
+                        person -> Log.i("Sonthing", "> Item $idx:\n${person.name} ${person.location.latitude} ${person.location.longitude}")
+                }
                 //creating json array
             /*  var jsonarray_info:JSONArray= json_contact.getJSONArray("states")*/
                // var i:Int = 0
