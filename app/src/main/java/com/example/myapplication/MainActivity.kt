@@ -24,21 +24,20 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-       // progress = findViewById(R.id.progressBar)
-      //  progress.visibility = View.VISIBLE
         Log.d("Sonthing ","aqli dagui")
         listView_details = findViewById<ListView>(R.id.listView) as ListView
         run("https://corona-watch-api.herokuapp.com/corona-watch-api/v1/geolocation/towns/")
     }
 
     fun run(url: String) {
-       // progress.visibility = View.VISIBLE
+
         Log.d("Sonthing ","aqli deg run")
+        //getting the response from our URL API
         val request = Request.Builder()
             .url(url)
             .header("Authorization","Basic YWRtaW46YWRtaW4=")
             .build()
-
+       //use the onFaiture and ionResponse to treat our request
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                // progress.visibility = View.GONE
@@ -48,11 +47,10 @@ class MainActivity : AppCompatActivity() {
             override fun onResponse(call: Call, response: Response)
             {
                 Log.d("Sonthing ","aqli deg on response")
+                //get the response as a sting
                 var str_response = response.body()!!.string()
 
-                //Log.d("Sonthing ","j'ai récupére : "+str_response)
-                //creating json object
-            // val json_contact = JSONObject(str_response)
+               //convert the jsonString into a list of calsse with GSON
                 val gson = Gson()
                 val listPersonType = object : TypeToken<List<Town>>() {}.type
                 var persons: List<Town> = gson.fromJson(str_response, listPersonType)
@@ -60,28 +58,13 @@ class MainActivity : AppCompatActivity() {
                         idx,
                         person -> Log.i("Sonthing", "> Item $idx:\n${person.name} ${person.location.latitude} ${person.location.longitude}")
                 }
-                //creating json array
-            /*  var jsonarray_info:JSONArray= json_contact.getJSONArray("states")*/
-               // var i:Int = 0
-               // var size:Int = json_contact.length()
-                arrayList_details= ArrayList()
-               /* for (i in 0.. size-1) {
-                    var json_objectdetail:JSONObject=json_contact.getJSONObject(i)
-                    var model:Model= Model();
-                    model.id=json_objectdetail.getString("id")
-                    model.name=json_objectdetail.getString("name")
-                    model.email=json_objectdetail.getString("postal_code")
 
-                    arrayList_details.add(model)
-                }*/
+                arrayList_details= ArrayList()
 
                 runOnUiThread {
                     //stuff that updates ui
-                  //  val obj_adapter : CustomAdapter
-                  //  obj_adapter = CustomAdapter(applicationContext,arrayList_details)
-                   // listView_details.adapter=obj_adapter
                 }
-                //progress.visibility = View.GONE
+
             }
         })
     }
