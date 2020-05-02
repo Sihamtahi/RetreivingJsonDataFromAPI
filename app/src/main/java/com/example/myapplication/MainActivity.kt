@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
         //getting the response from our URL API
         val request = Request.Builder()
             .url(url)
-            .header("Authorization","Basic YWRtaW46YWRtaW4=")
+            .header("HeaderName"," HeaderKey")
             .build()
        //use the onFaiture and ionResponse to treat our request
         client.newCall(request).enqueue(object : Callback {
